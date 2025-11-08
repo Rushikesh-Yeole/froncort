@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api'
+const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
 export default function AuthPage() {
   const router = useRouter()

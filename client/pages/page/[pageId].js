@@ -26,7 +26,7 @@ export default function PageEditor() {
 
     const ydoc = new Y.Doc();
     const provider = new WebsocketProvider(
-      "ws://localhost:1234",
+      process.env.NEXT_PUBLIC_YJS_URL,
       pageId.toString(),
       ydoc
     );

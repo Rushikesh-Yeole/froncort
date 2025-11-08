@@ -11,7 +11,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-very-secret-key-fallback';
+const JWT_SECRET = process.env.JWT_SECRET;
 const server = http.createServer();
 const wss = new WebSocketServer({ server });
 
@@ -242,4 +242,4 @@ wss.on("connection", async (conn, req) => {
 });
 
 const PORT = 1234;
-server.listen(PORT, () => console.log(`Y.js WebSocket server running on ws://localhost:${PORT}`));
+server.listen(PORT, () => console.log(`Y.js WebSocket server running on ${PORT}`));

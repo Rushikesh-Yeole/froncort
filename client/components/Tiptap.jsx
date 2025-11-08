@@ -19,8 +19,8 @@ import * as Y from 'yjs'
 import { WebsocketProvider } from 'y-websocket'
 import { diffWords } from 'diff'
 
-const API = 'http://localhost:5000/api'
-const YJS = 'ws://localhost:1234'
+const API = process.env.NEXT_PUBLIC_API_URL;
+const YJS = process.env.NEXT_PUBLIC_YJS_URL;
 
 // Axios interceptor
 axios.interceptors.request.use((config) => {
