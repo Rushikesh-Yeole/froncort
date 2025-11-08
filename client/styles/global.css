@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* styles/globals.css - tiny reset + content styling */
+html,body,#__next { height: 100%; }
+body { background: #f7fafc; color: #111827; margin: 0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+button { padding: 6px 10px; border-radius: 6px; border: 1px solid #ddd; background: white; cursor: pointer; }
+button[aria-pressed="true"] { background: #111827; color: white; border-color: #111827; }
+button:active { transform: translateY(1px); }
+.editor-content p { margin: 8px 0; line-height: 1.5; }
