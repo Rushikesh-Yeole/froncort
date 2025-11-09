@@ -12,8 +12,10 @@ export default function AuthPage() {
   const [form, setForm] = useState({ name: '', email: '', password: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
     const token = localStorage.getItem('token')
     if (token) router.replace('/')
   }, [router])
@@ -46,93 +48,191 @@ export default function AuthPage() {
     }
   }
 
+  if (!mounted) return null
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white w-full max-w-sm p-8 rounded-xl shadow-lg">
-        <h1 className="text-2xl font-bold text-center mb-6">
-          {mode === 'login' ? 'Login' : 'Register'}
-        </h1>
+    <>
+      <style jsx>{`
+        .auth-container {
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #f3f4f6;
+        }
+        .auth-card {
+          background: white;
+          width: 100%;
+          max-width: 384px;
+          padding: 32px;
+          border-radius: 12px;
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .auth-title {
+          font-size: 24px;
+          font-weight: 700;
+          text-align: center;
+          margin-bottom: 24px;
+          color: #111827;
+        }
+        .error-box {
+          background-color: #fee2e2;
+          color: #dc2626;
+          font-size: 14px;
+          padding: 12px;
+          margin-bottom: 16px;
+          border-radius: 8px;
+          border: 1px solid #fecaca;
+        }
+        .form-container {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+        .input-field {
+          width: 100%;
+          padding: 8px 16px;
+          border: 1px solid #d1d5db;
+          border-radius: 8px;
+          outline: none;
+          font-size: 14px;
+          transition: all 0.2s;
+        }
+        .input-field:focus {
+          ring: 2px;
+          ring-color: #111827;
+          border-color: #111827;
+        }
+        .submit-button {
+          width: 100%;
+          background-color: #111827;
+          color: white;
+          padding: 8px;
+          border-radius: 8px;
+          border: none;
+          cursor: pointer;
+          font-weight: 500;
+          transition: background-color 0.2s;
+        }
+        .submit-button:hover {
+          background-color: #1f2937;
+        }
+        .submit-button:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+        .footer-text {
+          text-align: center;
+          margin-top: 16px;
+          font-size: 14px;
+          color: #6b7280;
+        }
+        .link-button {
+          background: none;
+          border: none;
+          color: #1f2937;
+          font-weight: 500;
+          cursor: pointer;
+          text-decoration: none;
+        }
+        .link-button:hover {
+          text-decoration: underline;
+        }
+      `}</style>
+      
+      <div className="auth-container">
+        <div className="auth-card">
+          <h1 className="auth-title">
+            {mode === 'login' ? 'Login' : 'Register'}
+          </h1>
 
-        {error && (
-          <div className="bg-red-100 text-red-600 text-sm p-3 mb-4 rounded-lg border border-red-200">
-            {error}
-          </div>
-        )}
+          {error && (
+            <div className="error-box">
+              {error}
+            </div>
+          )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {mode === 'register' && (
+          <form onSubmit={handleSubmit} className="form-container" suppressHydrationWarning>
+            {mode === 'register' && (
+              <input
+                type="text"
+                name="name"
+                placeholder="Full Name"
+                value={form.name}
+                onChange={handleChange}
+                required
+                suppressHydrationWarning
+                className="input-field"
+              />
+            )}
+
             <input
-              type="text"
-              name="name"
-              placeholder="Full Name"
-              value={form.name}
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={form.email}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 outline-none"
+              suppressHydrationWarning
+              className="input-field"
             />
-          )}
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 outline-none"
-          />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={form.password}
+              onChange={handleChange}
+              required
+              suppressHydrationWarning
+              className="input-field"
+            />
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 outline-none"
-          />
+            <button
+              type="submit"
+              disabled={loading}
+              suppressHydrationWarning
+              className="submit-button"
+            >
+              {loading ? 'Please wait…' : mode === 'login' ? 'Login' : 'Register'}
+            </button>
+          </form>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-gray-900 text-white py-2 rounded-lg hover:bg-gray-800 transition disabled:opacity-50 font-medium"
-          >
-            {loading ? 'Please wait…' : mode === 'login' ? 'Login' : 'Register'}
-          </button>
-        </form>
-
-        <div className="text-center mt-4 text-sm">
-          {mode === 'login' ? (
-            <p>
-              Don’t have an account?{' '}
-              <button
-                type="button"
-                onClick={() => {
-                  setMode('register')
-                  setError('')
-                }}
-                className="text-gray-800 hover:underline font-medium"
-              >
-                Register
-              </button>
-            </p>
-          ) : (
-            <p>
-              Already have an account?{' '}
-              <button
-                type="button"
-                onClick={() => {
-                  setMode('login')
-                  setError('')
-                }}
-                className="text-gray-800 hover:underline font-medium"
-              >
-                Login
-              </button>
-            </p>
-          )}
+          <div className="footer-text">
+            {mode === 'login' ? (
+              <p>
+                Don't have an account?{' '}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMode('register')
+                    setError('')
+                  }}
+                  suppressHydrationWarning
+                  className="link-button"
+                >
+                  Register
+                </button>
+              </p>
+            ) : (
+              <p>
+                Already have an account?{' '}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMode('login')
+                    setError('')
+                  }}
+                  suppressHydrationWarning
+                  className="link-button"
+                >
+                  Login
+                </button>
+              </p>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

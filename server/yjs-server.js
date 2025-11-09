@@ -241,5 +241,5 @@ wss.on("connection", async (conn, req) => {
   });
 });
 
-const PORT = 1234;
+const PORT = process.env.PORT || 1234;
 server.listen(PORT, () => console.log(`Y.js WebSocket server running on ${PORT}`));
